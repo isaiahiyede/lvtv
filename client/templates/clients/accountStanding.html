@@ -1,0 +1,283 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+
+{% endblock section3 %}
+    
+{% block section4 %}
+<section id="inner-headline">
+           <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="pageTitle">Page de compte debout</h2>
+                </div>
+            </div>
+           </div>
+</section>
+
+<section id="content"  style="margin-bottom: -45px;">
+      <div class="container">
+          <style>
+            .button {
+                background-color: #002e5b;
+                color: white;
+                padding: 15px 32px;
+                cursor: pointer;
+                border-radius: 15px !important;
+            }
+
+            .order-scroll {
+                overflow-y: scroll;
+                max-height: 350px !important;
+            }
+
+            .helpers{
+                position: relative;
+                right: 100px;
+            }
+
+            .tooltiptext title {
+                background-color: blue;
+                /* Position the tooltip */
+            }
+
+          </style>
+
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <div class="about-logo">
+                        <h3>salut {{request.user}},</h3>
+                        <marquee behavior="scroll" direction="left">
+                        <p><b style="color:red;">AVERTISSEMENT!<b style="color:blue;"> C'EST UNE COMMUNAUTÉ D'AIDE FINANCIÈRE MUTUELLE!</b> Participez uniquement à l'argent de rechange. Ne pas contribuer tout l'argent que vous avez.</p>
+                        </marquee>
+                    </div>  
+                </div>
+
+            </div> 
+
+
+      </div>
+</section>
+
+<section id="content">
+        <div class="container content"  style="width:100% !important;">     
+        <!-- Service Blcoks -->
+                <div class="loading hidden" style="position: fixed;
+                                    left: 0px;
+                                    top: 240px;
+                                    width: 100%;
+                                    height: 100%;
+                                    z-index: 1;">
+                    <i class="fa fa-spinner fa-spin fa-5x fa-fw pull-right"></i>
+                </div>
+
+            <div class="row">
+
+                <table border="0" class="table table-bordered table-striped" id="accounts_table">
+                    <tr>
+                        <th>Type</th>
+                        <th>Numéro de <br/>suivi</th>
+                        <th>Relatif à</th>
+                        <th>Date créée</th>
+                        <th>Montant<br/>(GNF)</th>
+                        <th>Montant (GNF)<br/>(15 journées)</th>
+                        <th>Temps restant<br/>(15 journées)</th>
+                        <th>date de sortie<br/>(15 journées)</th>
+                        <th>Montant (GNF)<br/>(30 journées)</th>
+                        <th>Temps restant<br/>(30 journées)</th>
+                        <th>date de sortie<br/>(30 journées)</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr> 
+
+                    {% for contrib in contributions %}
+
+                        <tr>    
+                            <td>{{ contrib.type}}</td>
+                            <td>{{ contrib.tracking_number }}</td>
+                            <td>{{ contrib.rel_to}}</td>
+                            <td>{{ contrib.created_on }}</td>
+                            <td style="color:blue;">{{ contrib.amount }}</td>
+
+                             {% if contrib.type == "Provide Help" %}
+                                {% if contrib.help_requested and contrib.amount_requested == contrib.after_thirty_days %}
+                                        <td>0.0</td>
+                                {% else %}
+                                    {% if contrib.collection_date_after_15days <= current_time %}
+                                        <td style="color:green;">{{ contrib.after_fifteen_days }}<br/>Confirmed</td>
+                                    {% else %}
+                                        <td style="color:red;">{{ contrib.after_fifteen_days }}<br/>Pending</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                    <td>N/A</td>
+                            {% endif %}
+
+
+                            {% if contrib.type == "Provide Help" %}
+                                {% if contrib.help_requested and contrib.amount_requested == contrib.after_thirty_days %}
+                                    <td>N/A</td>
+                                {% else %}
+                                    {% if contrib.collection_date_after_15days == 'N/A' %}
+                                        <td>N/A</td>
+                                    {% else %}
+                                        <td>{% get_time_left contrib.collection_date_after_15days current_time %}</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                <td>N/A</td>
+                            {% endif %}
+
+
+                            {% if contrib.type == "Provide Help" %}
+                                {% if contrib.help_requested and contrib.amount_requested == contrib.after_thirty_days %}
+                                    <td>0:0:0000</td>
+                                {% else %}
+                                    <td>{{ contrib.collection_date_after_15days }}</td>
+                                {% endif %}
+                            {% else %}
+                                <td>N/A</td>
+                            {% endif %}
+
+
+                            {% if contrib.type == "Provide Help" %}
+                                {% if contrib.help_requested and contrib.amount_requested == contrib.after_fifteen_days %}
+                                        <td>0.0</td>
+                                {% else %}
+                                    {% if contrib.collection_date_after_30days <= current_time %}
+                                        <td style="color:green;">{{ contrib.after_thirty_days }}<br/>Confirmed</td>
+                                    {% else %}
+                                        <td style="color:red;">{{ contrib.after_thirty_days }}<br/>Pending</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                    <td>N/A</td>
+                            {% endif %}
+
+
+                            {% if contrib.type == "Provide Help" %}
+                                {% if contrib.help_requested and contrib.amount_requested == contrib.after_fifteen_days %}
+                                    <td>N/A</td>
+                                {% else %}
+                                    {% if contrib.collection_date_after_30days == 'N/A' %}
+                                        <td>N/A</td>
+                                    {% else %}
+                                        <td>{% get_time_left contrib.collection_date_after_30days current_time %}</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                <td>N/A</td>
+                            {% endif %}
+
+
+                            {% if contrib.type == "Provide Help" %}
+                                {% if contrib.help_requested and contrib.amount_requested == contrib.after_fifteen_days %}
+                                    <td>0:0:0000</td>
+                                {% else %}
+                                    <td>{{ contrib.collection_date_after_30days }}</td>
+                                {% endif %}
+                            {% else %}
+                                <td>N/A</td>
+                            {% endif %}
+
+
+                            {% if not contrib.completed %}
+                               <td style="color:orange;">Processing</td>&nbsp;&nbsp;
+                            {% else %}
+                               <td style="color:green;">Completed</td>&nbsp;&nbsp;
+                            {% endif %}
+
+
+                            {% if contrib.type == "Provide Help" %}
+                                {% if contrib.completed %}
+                                    <td style="color:green;">Completed</td>
+                                {% else %}
+                                    {% if contrib.collection_date_after_15days <= current_time %}
+                                      {% if not contrib.help_requested and contrib.help_provided %}
+                                        <td>
+                                        <a href="" class="get_help" {% if contrib.collection_date_after_30days <= current_time %} amt="{{ contrib.after_thirty_days }}"{% else %} amt="{{ contrib.after_fifteen_days }}" {% endif %} ph_order="{{contrib.tracking_number}}" data-toggle="modal" data-target="#ghForm">Get help</a>&nbsp;&nbsp;
+                                        {% if not contrib.rel_to %}
+                                        <a href="{% url 'client:del_request' contrib.tracking_number %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande?')">
+                                        <i class="fa fa-trash-o"></i></a>
+                                        {% endif %}
+                                        </td>
+                                      {% else %}
+                                         <td style="color:orange;">Processing&nbsp;&nbsp;
+                                        {% if not contrib.rel_to %}
+                                         <a href="{% url 'client:del_request' contrib.tracking_number %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande?')">
+                                         <i class="fa fa-trash-o"></i></a>
+                                         {% endif %}
+                                         </td>
+                                      {% endif %}
+                                    {% else %}
+                                        <td>Loading...&nbsp;&nbsp;
+                                        {% if not contrib.rel_to %}
+                                        <a href="{% url 'client:del_request' contrib.tracking_number %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande??')">
+                                        <i class="fa fa-trash-o"></i></a>
+                                        {% endif %}
+                                        </td>
+                                    {% endif %}
+                                {% endif %} 
+                            {% else %}
+
+                                {% if contrib.completed %}
+                                    <td style="color:green;">Completed&nbsp;&nbsp;
+                                {% else %}
+                                    <td style="color:orange;">Processing&nbsp;&nbsp;
+                                {% endif %}
+
+                                {% if not contrib.status == "Paired" and not contrib.rel_to == "referral" %}
+                                    <a href="{% url 'client:del_request' contrib.tracking_number %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande?')">
+                                    <i class="fa fa-trash-o"></i>
+                                    </a>
+                                {% endif %}
+                                </td>
+                            {% endif %}
+                        </tr>   
+                    {% endfor %}
+                </table> 
+
+            </div> 
+
+            </div>
+
+
+              <div class="pagination" style="position:relative; font-size:20px; margin:0px; left: 500px;
+                bottom: 24px;">
+                <span class="step-links">
+                    {% if contributions.has_previous %}
+                        <a style="font-size:20px;" href="?page={{ contributions.previous_page_number }}">&laquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden" >&laquo;</a>
+                    {% endif %}
+
+                    <span style="font-size:20px;" class="current">
+                        Page {{ contributions.number }} of {{ contributions.paginator.num_pages }}.
+                    </span>
+
+                    {% if contributions.has_next %}
+                        <a style="font-size:20px;" href="?page={{ contributions.next_page_number }}">&raquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden">&raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+</section>
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}
+
+{% block modal %}
+{% endblock modal %}

@@ -1,0 +1,220 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+<div class="loading hidden" style="text-align: center;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
+{% endblock section3 %}
+
+{% block section4 %}
+
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="pageTitle">Administrator, {{request.user}}</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="content">
+      <div class="container">
+
+          <style>
+            .button {
+                background-color: #002e5b;
+                color: white;
+                padding: 15px 32px;
+                cursor: pointer;
+                border-radius: 15px !important;
+            }
+
+            .button2 {
+                color: white;
+                padding: 15px 32px;
+                border-radius: 5px !important;
+            }
+
+            .order-scroll {
+                overflow-y: scroll;
+                max-height: 350px !important;
+            }
+
+            .helpers{
+                position: relative;
+                right: 100px;
+            }
+
+            .tooltiptext title {
+                background-color: blue;
+                /* Position the tooltip */
+            }
+
+          </style>
+
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <div class="about-logo">
+                        <span>
+                        <h4 class="pull-right">Number of Users:&nbsp; {% get_all_users %}</h4>
+                        </span>
+                        <marquee behavior="scroll" direction="left">
+                        <p><b style="color:red;">WARNING!</b> <b style="color:blue;">Please check and double check before performing any operation;</b> Participants are counting on your utmost deligence for them to enjoy the ease of use of the application </p>
+                        </marquee>
+                    </div>  
+                </div>
+            </div>           
+      </div>
+</section>
+
+<section id="gallery-1" class="content-block section-wrapper gallery-1">
+	 	<div class="container">  
+            <div class="row">
+
+            <table border="0" class="table table-striped" id="users_table">
+                    <style>
+
+                        .dropdown {
+                            background:#fff;
+                            border-radius:4px;
+                            right: 120px;
+
+                        }
+
+                        .dropdown-menu>li>a {
+                            /* display: block; */
+                            color:#428bca;
+                            padding: 3px 20px;
+                            clear: both;
+                            font-weight: 400;
+                            line-height: 1.428571429;
+                            white-space: nowrap;
+                        }
+
+                        .dropdown ul.dropdown-menu {
+                            border-radius:4px;
+                            box-shadow:none;
+                            margin-top:8px;
+                            background: black;
+                            width: 160px;
+
+                        }
+
+                        .dropdown ul.dropdown-menu:before {
+                            content: "";
+                            border-bottom: 10px solid #fff;
+                            border-right: 10px solid transparent;
+                            border-left: 10px solid transparent;
+                            position: absolute;
+                            top: -10px;
+                            right: 16px;
+                            z-index: 10;
+                        }
+
+                        .dropdown ul.dropdown-menu:after {
+                            content: "";
+                            border-bottom: 12px solid #ccc;
+                            border-right: 12px solid transparent;
+                            border-left: 12px solid transparent;
+                            position: absolute;
+                            top: -12px;
+                            right: 14px;
+                            z-index: 9;
+                        }
+
+                        li{
+                            list-style: none;
+                        }
+
+                    </style>
+
+                    <tr>
+                        <th>S/N</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Telephone</th>  
+                        <th>Bank Name</th> 
+                        <th>Account Number</th>
+                        <th>Profile Complete</th>  
+                        <th></th>
+                    </tr> 
+          
+                    {% for user in user_account %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{user.user.first_name}}&nbsp;{{user.user.last_name}}</td>
+                            {% if user.user.is_staff %}
+                                <td>Admin</td>
+                            {% else %}
+                                <td>Regular</td>
+                            {% endif %}
+                            <td>{{user.phone_number}}</td>
+                            <td>{{user.bank_name}}</td> 
+                            <td>{{user.bank_acc_number}}</td>
+                            <td>{{user.profile_up_to_date}}</td>
+                            <td>
+                            <ul class="">
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                  <span><i class="fa fa-ellipsis-h" style="position: relative;left: 129px"></i></span></a>
+                                  <ul class="dropdown-menu">
+                                    {% if user.block  %}
+                                    <li><a style="cursor: pointer;" class="user_action" user_pk="{{user.pk}}">Unblock</a></li>
+                                    {% else %}
+                                    <li><a style="cursor: pointer;" class="user_action" user_pk="{{user.pk}}">Block</a></li>
+                                    {% endif %}
+                                    <li class="divider"></li>
+                                    <li><a style="cursor: pointer;" class="user_edit" action="editprofile" user_pk="{{user.pk}}">Edit</a>
+                                    <li class="divider"></li>
+                                    <li><a style="cursor: pointer;" class="user_action" action="userprofile" user_pk="{{user.pk}}">Profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a style="cursor: pointer;" href="{% url 'general:user_logout' %}" onclick="return confirm('Are you sure you want to logout')">Logout</a></li>
+                                  </ul>
+                                </li>
+                            </ul>
+                            </td>
+                        </tr> 
+                    {% endfor %}
+                
+            </table><br/><br/>
+
+            <div class="pagination" style="position:relative; font-size:20px; margin:0px; left:500px;">
+                <span class="step-links">
+                    {% if user_account.has_previous %}
+                        <a style="font-size:20px;" href="?page={{ user_account.previous_page_number }}">&laquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+                    {% endif %}
+
+                    <span style="font-size:20px;" class="current">
+                        Page {{ user_account.number }} of {{ user_account.paginator.num_pages }}.
+                    </span>
+
+                    {% if user_account.has_next %}
+                        <a style="font-size:20px;" href="?page={{ user_account.next_page_number }}">&raquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- /.isotope-gallery-container -->
+        </div>
+        <!-- /.row --> 
+	</div>
+</section>
+
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}

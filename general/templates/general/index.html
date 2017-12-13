@@ -1,0 +1,488 @@
+{% load staticfiles %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+{% block title %}<title>VDP GUINEA</title>{% endblock title %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="" />
+<!-- <meta name="author" content="http://webthemez.com" />
+ --><!-- css -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+<link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet"> 
+<!-- <link href="{% static 'css/fancybox/font-awesome.css' %}" rel="stylesheet"> 
+ -->
+<link href="{% static 'css/flexslider.css' %}" rel="stylesheet" /> 
+<link href="{% static 'css/style.css' %}" rel="stylesheet" />
+<link href="{% static 'css/gallery-1.css' %}" rel="stylesheet">
+<link href="{% static 'css/magnific-popup.css' %}" rel="stylesheet">
+<link href="{% static 'css/custom.css' %}" rel="stylesheet"> 
+
+ 
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<div id="wrapper" class="home-page">
+
+	{% block top_nav %}
+	<div class="topbar">
+	  <div class="container">
+	    <div class="row">
+	      <div class="col-md-12"> 	  
+	        <p class="pull-left hidden-xs"><i class="fa fa-clock-o"></i><span>{% now "jS F Y" %}</span></p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	{% endblock top_nav %}
+
+
+			
+	<!-- start header -->
+	{% block section1 %}
+    <section class="header">
+	   <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" style="padding: 10px 0 0 15px;" href="{% url 'general:gen_views' 'index' %}"><span>VDP Guinea</span>
+                </div>
+
+
+                <div class="navbar-collapse collapse">
+
+                	<style>
+                		
+                		header .nav li .dropdown-menu li a{
+                			line-height: 10px !important;
+                		}
+
+                		header ul.nav li ul li a{
+                			font-size: 10px !important;
+                		}
+
+                	</style>
+
+                    <ul class="nav navbar-nav" style="">
+                    	{% if not request.user.is_staff %}
+                    		<li class="active" style="position: relative; right:30px;"><a href="/">Accueil</a></li>
+                    		<li class="dropdown" style="position: relative; right:30px;"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    			<ul class="dropdown-menu">
+				                        <li><a href="{% url 'general:gen_views' 'about' %}">À propos de nous</a></li>
+				                        <li role="presentation" class="divider"></li> 
+				                        <li><a href="{% url 'general:gen_views' 'testimonials' %}">Témoignages</a></li>
+				                        <li role="presentation" class="divider"></li>
+				                        <li><a href="{% url 'general:gen_views' 'howitworks' %}">Comment ça Marche</a></li>
+				                        <li role="presentation" class="divider"></li>
+				                    {% endif %}
+
+									{% if request.user.is_authenticated and request.user.is_staff %}
+			                        	<li {% if 'get-users' in request.path %} class="active"{% endif %} ><a href="{% url 'lvtvAdmin:get_users' %}">Users</a></li>
+			                        	<li role="presentation" class="divider"></li>
+			                        {% endif %}
+
+				                    {% if request.user.is_authenticated and request.user.is_staff %}
+			                        	<li {% if 'get-orders' in request.path %} class="active"{% endif %} ><a href="{% url 'lvtvAdmin:admin_views' %}">Order Manager</a></li>
+			                        	<li role="presentation" class="divider"></li>
+			                        {% endif %}
+
+			                        {% if request.user.is_authenticated and request.user.is_staff %}
+			                        	<li {% if 'message/center' in request.path %} class="active"{% endif %} ><a href="{% url 'lvtvAdmin:admin_messages' %}">Messages</a></li>
+			                        	<li role="presentation" class="divider"></li>
+			                        {% endif %}
+
+			                        {% if not request.user.is_authenticated %}
+			                        	<li><a href="{% url 'general:gen_views' 'register' %}">Registre</a></li>
+			                        	<li role="presentation" class="divider"></li>
+			                        {% endif %}
+
+			                        {% if request.user.is_authenticated and not request.user.is_staff %}
+			                        	<li><a href="{% url 'client:client_views' %}">Mon compte</a></li>
+			                        	<li role="presentation" class="divider"></li> 
+
+			                        {% endif %}
+
+			                        {% if request.user.is_authenticated and not request.user.is_staff %}
+			                        	{% if request.user.useraccount.completed %}
+			                            	<li><a style="cursor:pointer !important;" tabindex="-1" data-toggle="modal" data-target="#viewprofileForm">Voir le profil</a></li>
+			                            {% else %}
+			                            	<li><a style="cursor:pointer !important;" tabindex="-1" data-toggle="modal" data-target="#profileForm">Profil complete</a></li>
+			                            {% endif %}
+			                        	<li role="presentation" class="divider"></li> 
+			                        {% endif %}
+
+			                        {% if request.user.is_authenticated and not request.user.is_staff %}
+			                        	<li><a href="{% url 'client:client_support' %}">Soutien</a></li>
+			                        	<li role="presentation" class="divider"></li>
+			                        {% endif %}
+
+			                        {% if not request.user.is_authenticated %}
+			                        	<li><a href="{% url 'general:gen_views' 'login' %}">S'identifier</a></li>
+			                        {% else %}
+			                            <li><a href="{% url 'general:user_logout' %}" onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter')">Connectez - Out</a></li>
+			                        {% endif %}
+			                    </ul>
+			                 </li>
+						</ul>
+                </div>
+            </div>
+        </div>
+	  </header>
+
+	</section>
+	{% endblock section1 %}
+
+	<!-- end header -->
+	{% block section2 %}
+	<section id="banner" style="background: white;"> 
+	<!-- Slider -->
+		<marquee style="background-color: white;" behavior="scroll" direction="left" scrollamount='5'>	 <div class="testimonials">
+		<h3 style="background-color: white;">
+			Bienvenue dans la liberté financière. Une communauté où chacun est égal et où la richesse et la prospérité sont assurées ». Les rêves se réalisent à VDP !!!
+		</h3>
+		</marquee>
+
+        <div id="main-slider" class="flexslider">
+            <ul class="slides">
+             <li>
+                <img src="{% static 'img/together7.jpg' %}" alt="" />
+                <div class="flex-caption">
+                </div>
+              </li>
+             
+              <li>
+                <img src="{% static 'img/together3.jpeg' %}" alt="" />
+                <div class="flex-caption">
+                </div>
+              </li>
+
+               <li>
+                <img src="{% static 'img/register.jpg' %}" alt="" />
+                <div class="flex-caption">
+                </div>
+              </li>
+            </ul>
+        </div>
+	<!-- end slider -->
+	</section>
+	{% endblock section2 %}
+
+ 	<input type="hidden" name="needed_value" id="needed_value" value="">
+
+	{% block section3 %}
+	<!-- <section id="call-to-action-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-sm-9">
+					<h3>Best Business consulting</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores quae porro consequatur aliquam, incidunt eius magni provident, doloribus omnis minus temporibus perferendis nesciunt quam repellendus nulla nemo ipsum odit corrupti</p>
+				</div>
+				<div class="col-md-2 col-sm-3">
+					<a href="#" class="btn btn-primary">Read More</a>
+				</div>
+			</div>
+		</div>
+	</section> -->
+	{% endblock section3 %}
+
+
+	
+	{% block section4 %}
+	<section id="content">
+	
+
+		<div class="container">
+	    	<div class="row">
+			<div class="col-md-12">
+				<div class="aligncenter"><h2 class="aligncenter">PRINCIPE DE VDP</h2>
+				<p>Créer une plate-forme durable pour distribuer la richesse parmi tous les membres.</p></div>
+				<br/>
+			</div>
+		</div>
+
+	 	<div class="row">
+            <div class="col-sm-4 info-blocks">
+                <i class="icon-info-blocks fa fa-bell-o"></i>
+                <div class="info-blocks-in">
+                    <h3>Objectif</h3>
+                    <p>Fournir le système et le soutien nécessaire pour permettre à nos membres d'atteindre notre vision de vivre une vie bien au-dessus de la pauvreté</p>
+                </div>
+            </div>
+            <div class="col-sm-4 info-blocks">
+                <i class="icon-info-blocks fa fa-hdd-o"></i>
+                <div class="info-blocks-in">
+
+                    <h3>Stratégie </h3>
+                    <p>Les contributions des membres sont recyclées aux membres.</p>
+                </div>
+            </div>
+            <div class="col-sm-4 info-blocks">
+                <i class="icon-info-blocks fa fa-lightbulb-o"></i>
+                <div class="info-blocks-in">
+
+                    <h3>Analyse </h3>
+                    <p>Comparez vos contributions et ce que vous avez reçu</p>
+                </div>
+            </div>
+        </div>
+		<div class="row">
+            <div class="col-sm-4 info-blocks">
+                <i class="icon-info-blocks fa fa-code"></i>
+                <div class="info-blocks-in">
+
+                    <h3>Valeurs </h3>
+                    <p>Le bien-être de la population est notre objectif ultime. L'engagement de nos membres nous fait ressortir de la foule, alors que nous développons des personnes pour la responsabilité durable dans un processus en temps réel.
+                </div>
+            </div>
+            <div class="col-sm-4 info-blocks">
+                <i class="icon-info-blocks fa fa-compress"></i>
+                <div class="info-blocks-in">
+                    <h3>Innovant </h3>
+                    <p>Le meilleur Plateforme de développement pour répondre aux besoins de nos membres.
+				</p>
+                </div>
+            </div>
+            <div class="col-sm-4 info-blocks">
+                <i class="icon-info-blocks fa fa-html5"></i>
+                <div class="info-blocks-in">
+                    <h3>Soutien 24/7 </h3>
+                    <p>Appelez pour le support et les questions au moment de votre convivialité.</p>
+                </div>
+            </div>
+        </div>
+		</div>
+	</section>
+	{% endblock section4 %}
+
+
+	
+	{% block section5 %}
+	<section class="section-padding gray-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="section-title text-center">
+
+						<h2>NOTRE ORGANISATION </h2>
+						<p>Chez VDP, nous essayons de faire en sorte que tous les membres prennent en charge leur situation financière</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-sm-6">
+					<div class="about-text">
+						<p>Avec une plate-forme dynamique conviviale, nous sommes prêts à donner à tous nos membres le contrôle total de leurs comptes et finances</p>
+
+						<ul class="withArrow">
+							<a href="{% url 'general:gen_views' 'howitworks' %}#content"><li><span class="fa fa-angle-right"></span> Comment ça Marche?</li></a>
+							<a href="{% url 'general:gen_views' 'howitworks' %}#content"><li><span class="fa fa-angle-right"></span> Comment participer à VDP-Guinée</li></a>
+							<a href="{% url 'general:gen_views' 'howitworks' %}#content"><li><span class="fa fa-angle-right"></span> Qui peut devenir membre</li></a>
+							<a href="{% url 'general:gen_views' 'howitworks' %}#content"><li><span class="fa fa-angle-right"></span> Comment Devenir Membre</li></a>
+							<a href="{% url 'general:gen_views' 'howitworks' %}#content"><li><span class="fa fa-angle-right"></span> Qu'est-ce qu'un compte d'utilisateur</li></a>
+				
+						</ul>
+						<a href="{% url 'general:gen_views' 'howitworks' %}" class="btn btn-primary">Apprendre encore plus</a>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6">
+					<div class="about-image">
+						<img src="{% static 'img/together8.jpg' %}" alt="About Images">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{% endblock section5 %}
+
+	  
+	
+	{% block section6 %}
+	<section>
+	   <div class="about home-about" >
+		<div class="container">
+				
+				<div class="row">
+					<div class="col-md-6">
+						<!-- Heading and para -->
+						<div class="block-heading-two">
+							<h3><span>Programmes</span></h3>
+						</div>
+						<p>
+							La communauté d'investissement VDP présente un forum où vous pouvez apprendre des moyens et investir vos finances. Ici, vous aurez l'opportunité d'apprendre et d'interagir avec des professionnels chevronnés des placements qui ont un précieux bilan d'investissement. Rejoignez-nous
+						</p>
+					</div>
+					
+					<div class="col-md-6">
+						<div class="block-heading-two">
+							<h3><a href="{% url 'general:gen_views' 'testimonials' %}"><span>Témoignages</span></a></h3>
+						</div>
+						<marquee behavior="scroll" direction="down" scrollamount='10'  style="height:350px;">	 <div class="testimonials">
+					     	{% for testimony in testimonials %}
+							<div class="active item">
+							  <blockquote><p>{{testimony.default_text}}<br/>{{testimony.message}}<br/>{{testimony.created_on}}</p></blockquote>
+							  <div class="carousel-info">
+								<img alt="" src="{{testimony.testimony_image.url}}" class="pull-left">
+								<div class="pull-left">
+								  <span class="testimonials-name">{{testimony.user.username}}</span>
+								</div>
+							  </div>
+							</div>
+							{% endfor %}
+						</div>
+						</marquee>
+					</div>
+					
+				</div>
+				
+				 						
+				 
+				<br>
+			 
+			  </div>
+		</div>
+	</section>
+	{% endblock section6 %}
+				
+					
+	{% block footer %}
+	<footer>
+		<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-sm-4">
+				<div class="widget">
+					<h5 class="widgetheading">Notre contact</h5>
+					<address>
+					<a href="/"><strong>VDP</strong></a><br>
+					<i class="icon-envelope-alt"></i> guinealvtv@gmail.com
+					</address>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<div class="widget">
+					<h5 class="widgetheading">Liens rapides</h5>
+					<ul class="link-list">
+						<li><a href="{% url 'general:gen_views' 'about' %}">À propos de nous</a></li>
+
+						{% if not request.user.is_authenticated %}
+							<li><a href="{% url 'general:login' %}">Identifiant</a></li>
+						{% else %}
+							<li><a href="{% url 'general:user_logout' %}">Connectez - Out</a></li>
+						{% endif %}
+
+						{% if not request.user.is_authenticated %}
+							<li><a href="{% url 'general:gen_views' 'register' %}">Registre</a></li>
+						{% endif %}
+						
+						<li><a href="{% url 'general:gen_views' 'howitworks' %}">Comment ça Marche</a></li>
+						<li><a href="{% url 'general:gen_views' 'testimonials' %}">Témoignages</a></li>
+						<li><a href="{% url 'general:gen_views' 'support' %}">Contactez le support</a></li>
+						<li><a href="/">FAQ</a></li>
+
+ 
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<div class="widget">
+					<h5 class="widgetheading">Dernières publications</h5>
+					<ul class="link-list">
+						<li><a href="#">Présentation du nouveau paquet..</a></li>
+						<li><a href="#">Nouvelles règles pour choisir un paquet</a></li>
+						<li><a href="#">Conseils de confidentialité à tous les membres</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div id="sub-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="copyright">
+						<p>
+						</p>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<ul class="social-network">
+						<li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+						<li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		</div>
+	</footer>
+	{% endblock footer %}
+
+
+</div>
+	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+
+	{% include 'general_snippets/all_modals.html' %}
+
+
+	<!-- javascript
+	    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	{% block scripts %}
+		<script src="{% static 'js/jquery.js' %}"></script>
+		<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+		<script src="{% static 'js/jquery.fancybox-media.js' %}"></script>  
+		<script src="{% static 'js/jquery.flexslider.js' %}"></script>
+		<script src="{% static 'js/animate.js' %}"></script>
+		<!-- Vendor Scripts -->
+		<script src="{% static 'js/modernizr.custom.js' %}"></script>
+		<script src="{% static 'js/jquery.isotope.min.js' %}"></script>
+		<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+		<script src="{% static 'js/animate.js' %}"></script>
+		<script src="{% static 'js/custom.js' %}"></script>
+	{% endblock scripts %}
+
+
+	{% include 'general_snippets/custom_scripts.html' %}
+ 
+   </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

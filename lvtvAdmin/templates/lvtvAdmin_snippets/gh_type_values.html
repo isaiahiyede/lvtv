@@ -1,0 +1,53 @@
+ <div class="modal-content" id="avail_gh_values">
+
+    <!-- Modal Header -->
+    <div class="modal-header" style="background-color: azure;">
+        <button type="button" class="close" 
+           data-dismiss="modal">
+               <span aria-hidden="true">&times;</span>
+               <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            {{gh_header}}
+        </h4>
+    </div>
+    
+    <!-- Modal Body -->
+    <div class="modal-body" style="background-color: azure;">
+         <table border="0" class="table table-striped" id="gh_table_values">
+            <tr>
+                <th>Tracking number</th>
+                <th>Participant</th> 
+                <th>Date Created</th> 
+                <th>Amount</th> 
+                <th>Amount Paired</th>
+                <th>Amount Left</th> 
+                <th>Status</th> 
+            </tr> 
+  
+            {% for contrib in gethelp %}
+                <tr>
+                    <td>{{contrib.tracking_number}}</td>
+                    <td>{{contrib.user_account}}</td>
+                    <td>{{contrib.created_on}}</td>
+                    <td>{{contrib.amount}}</td>
+                    <td>{{contrib.amt_paired}}</td>
+                    <td>{{contrib.amt_left}}</td> 
+                    <td>{{contrib.status}}</td>
+                    {% if not contrib.provideHelp %}
+                        {% if not is_paired %}
+                        <td><a class="get_gh" tracking_number="{{contrib.tracking_number}}" style="cursor: pointer !important;">Pair</a></td>
+                        {% endif %}
+                    {% endif %}
+                    
+                </tr> 
+            {% endfor %}
+        </table>
+    </div>
+    
+    <!-- Modal Footer -->
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+    </div> -->
+
+</div>

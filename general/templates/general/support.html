@@ -1,0 +1,85 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+{% endblock section3 %}
+
+{% block section4 %}
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="pageTitle">Contactez nous</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="content">
+	
+		<div class="container">
+
+			<div class="row"> 
+				<div class="col-md-12">
+					<div class="about-logo">
+						<h3>Avoir un problème?</h3>
+						 <p>Remplissez le formulaire ci-dessous et vous serez répondu entre 24 heures et 48 heures</p>
+					</div>  
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+										  	
+				   <!-- Form itself -->
+		          <form name="sentMessage" id="contactForm" action="{% url 'general:contact_support' %}" method="POST">
+		          {% csrf_token %}
+			       <h3>Contactez le support</h3>
+						<div class="control-group">
+				            <div class="controls">
+				            <label class="label-controller">Assujettir</label>
+								<input type="text" class="form-control" 
+								   	    id="subject" name="subject" required />
+								  <p class="help-block"></p>
+						    </div>
+					    </div> 	
+			            <div class="control-group">
+			            <label class="label-controller">Email</label>
+			                  <div class="controls">
+								<input type="text" name="email" class="form-control" 
+						   	            id="email" required />
+							 </div>
+				    	</div><br/> 	
+							  
+		               <div class="control-group">
+		                 <div class="controls">
+		                 <label class="label-controller">Message</label>
+							 <textarea rows="10" cols="100" class="form-control" 
+			                        id="message" required name="message" value="">
+			                 </textarea>
+						</div>
+		               </div><br/> 
+
+					   <div id="success"> </div> <!-- For success/fail messages -->
+			    		<button type="submit" class="btn btn-primary pull-right">Soumettre</button><br />
+		          </form>
+				</div>
+
+				<div class="col-md-6">
+				</div>	
+			</div>
+
+	    </div>
+</section>
+
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}

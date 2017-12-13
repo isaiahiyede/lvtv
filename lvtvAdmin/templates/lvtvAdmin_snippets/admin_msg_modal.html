@@ -1,0 +1,83 @@
+ <div class="modal-content" id="admin_msg_view">
+ {% include 'general/special_styles.html' %}
+
+    <!-- Modal Header -->
+    <div class="modal-header"  style="background-color: azure;">
+        <button type="button" class="close" 
+           data-dismiss="modal">
+               <span aria-hidden="true">&times;</span>
+               <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            Respond to participants complaints
+        </h4>
+        <p> <b>NOTE:</b> The use of <span style="color:red;">foul languauge and abuse speech</span> is highly prohibited and will lead to blocking of account if <br/>investigated by admin and establisehd to be true</p>
+    </div>
+    
+
+    <!-- Modal Body -->
+    <div class="modal-body" id="get_all_messages" style="background-color: azure;">
+        <div class="all_comms" style="overflow: scroll; margin-bottom: 10px;  height: 250px;" >
+
+        {% if msg_obj.get_comments %}
+            {% for message in msg_obj.get_comments %}
+                <div class="the_message">
+                {% if message.support_admin %}
+                    <span class="shape_oval_orange" style="position: relative; top: 15px;"></span>
+                    <span style="position: relative; left: 20px;">Admin</span><br/>
+                {% else %}
+                    <span class="shape_oval_green" style="position: relative; top: 15px;"></span>
+                    <span style="position: relative; left: 20px;">Receiver</span><br/>
+                {% endif %}
+                    <span>{{message.message}}</span><br/>
+                    <span>{{message.date}}</span><br/>
+                    {% if message.image_obj %}
+                    <span><a href="{{message.image_obj.url}}">image</a></span>
+                    {% endif %}
+                </div><hr>
+
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        <div class="comms_all">
+            <div class="the_values">
+                <label>Message</label>
+                <form method="POST" class="post-forms" method="POST" action="{% url 'lvtvAdmin:get_admin_msgs' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="fieldWrapper" id="the_post">
+                        {{ form.message }}
+                    </div>
+                    <div class="fieldWrapper" id="the_post_img">
+                        {{ form.image_obj }}
+                    </div>
+                    <input type="hidden" name="admin_msg_id" id="admin_msg_id" value="{{msg_obj.pk}}">
+                    <input type="hidden" name="admin_support" id="admin_support" value="support">
+                    <div id="results"></div> <!-- errors go here -->
+                    <input class="pull-right btn2" type="submit" value="Post" class="tiny button create_request">
+                </form>
+            </div>
+            <!-- <form name="post_form" id="post_form" action="" method="">
+                {% csrf_token %}
+                <span>
+                  <div class="form-group">
+                    <textarea name="match_message" required id="match_message" value="" rows="4" cols="50" style="border-radius:4px !important;"></textarea>
+                  </div> 
+                  <div class="form-group">
+                    <input type="file" name="message_image" id="message_image">
+                  </div>
+                  <input type="hidden" name="match_message_id" id="match_message_id" value="{{matched_order.pk}}">
+                  <input type="submit" value="send" class="button3 pull-right">
+                </span>
+            </form> -->
+            
+        </div>
+    </div>
+
+
+    <!-- Modal Footer -->
+    <div class="modal-footer"  style="background-color: azure;">
+       
+    </div>
+
+</div>

@@ -1,0 +1,48 @@
+<div class="modal-body" style="background-color: azure;" id="edit_user_profile">
+              
+  <form name="edit_profile" id="edit_profile" action="{% url 'lvtvAdmin:user_edit' %}" method="POST">
+      {% csrf_token %}
+      <span>
+        <label>First Name</label> 
+        <div class="form-group">
+          <input class="form-control" type="text" name="firstname" id="firstname" value="{{user.user.first_name}}">
+        </div>
+
+        <label>Last Name</label>
+        <div class="form-group">
+          <input class="form-control" type="text" name="lastname" id="lastname" value="{{user.user.last_name}}">
+        </div>
+
+        <label>Username</label>
+        <div class="form-group">
+          <input class="form-control" type="text" name="username" id="username" value="{{user.user.username}}">
+        </div>
+
+        <label>Email</label>
+        <div class="form-group">
+          <input class="form-control" type="text" name="user_email" id="user_email" value="{{user.user.email}}">
+        </div>
+
+        <label>Phone Number</label>
+        <div class="form-group">
+          <input class="form-control" type="text" name="phone_num" id="phone_num" value="{{user.phone_number}}">
+        </div>
+
+        <label>Bank Name</label>
+        <div class="form-group">
+          <input class="form-control" type="text" name="bank_name" id="bank_name" value="{{user.bank_name}}">
+        </div>
+
+        <label>Bank Account Number</label>
+        <div class="form-group">
+          <input class="form-control" type="text" name="bank_acc_number" id="bank_acc_number" 
+          value="{{user.bank_acc_number}}">
+        </div>
+
+        <input type="hidden" name="user_id" id="user_id" value="{{user.pk}}">
+
+        <input type="submit" value="Submit" class="button3 pull-right">
+      </span>
+  </form>
+
+</div>

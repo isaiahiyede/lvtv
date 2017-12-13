@@ -1,0 +1,69 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+{% endblock section3 %}
+
+{% block section4 %}
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="pageTitle">Témoignages</h2>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="content">
+    <div class="container">
+      <div class="row"> 
+        <div class="col-md-12">
+            <div class="about-logo">
+                <h3>Voyez ce que les membres disent à propos de VDP-guinea</h3>
+            </div>  
+        </div>
+      </div>                  
+    </div>
+</section>  
+{% endblock section4 %}
+
+{% block section5 %}
+<section >
+  <div class="about home-about">
+    <div class="container">
+        <marquee class="col-md-6" behavior="scroll" direction="down" scrollamount='10' style="height:350px;">
+          <div class="row" >
+              {% for testimonial in testimonials %}
+                <div class="block-heading-two">
+                </div>  
+                     <div class="testimonials">
+                        <div class="active item">
+                          <blockquote><p>{{testimonial.default_text}}<br/>{{testimonial.message}}<br/>{{testimonial.created_on}}</p></blockquote>
+                          <div class="carousel-info">
+                            <img alt="" src="{{testimonial.testimony_image.url}}" class="pull-left">
+                            <div class="pull-left">
+                              <span class="testimonials-name">{{testimonial.user.username}}</span><br/>
+                              
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+              {% endfor %} 
+              <div class="col-md-6"></div>                
+          </div>
+        </marquee>   
+    </div>                
+  </div>
+</section>
+{% endblock section5 %}
+
+
+{% block section6 %}
+{% endblock section6 %}
+
+
+

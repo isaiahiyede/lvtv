@@ -1,0 +1,249 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+{% endblock section3 %}
+
+{% block section4 %}
+<section id="inner-headline">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h2 class="pageTitle">Inscrivez-vous ici</h2>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+{% if user_is_created %}
+  {% include 'general/successfulReg.html' %}
+{% else %}
+
+	<section id="content">
+		
+		<div class="container">
+			<div class="row"> 
+				<div class="col-md-12">
+					<div class="about-logo">
+						<p>Vous pouvez vous inscrire en remplissant le formulaire;</p>
+	                    <p>Ou vous pouvez demander une recommandation VDP pour vous aider. C'est à vous <b style="color:red;">de voir</b></p>
+	                    <p>Mais vous pouvez choisir une seule option. Soit le formulaire ou la liste.</p>
+	                    <p>NB: Champs avec <b style="color:red">'*'</b> sont requis</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-6">						   
+					<!-- Form itself -->
+		        	<form action="{% url 'general:userregister' %}" method="POST">
+	                {% csrf_token %}
+
+			       <h3>Formulaire d'inscription des membres</h3>
+			        <div class="control-group">
+			            <div class="controls">
+			            <label class="label-controller">Prénom</label>
+						{{user_form.first_name}}
+						  <p class="help-block"></p>
+					   </div>
+			         </div> 
+
+			         <div class="control-group">
+			            <div class="controls">
+			            <label class="label-controller">Nom de famille</label>
+						{{user_form.last_name}}
+						  <p class="help-block"></p>
+					   </div>
+			         </div> 
+
+					 <div class="control-group">
+						{% if not username_is_taken %}
+						 <div class="controls">
+				            <label class="label-controller">Nom d'utilisateur</label>
+							{{user_form.username}}
+							<p class="help-block"></p>
+						</div>
+						{% else %}
+				         <div class="controls">
+				            <label class="label-controller">Nom d'utilisateur</label>
+							{{user_form.username}}
+							 <p class="help-block" style="color:red">Nom d'utilisateur pris</p>
+						  </div>
+						{% endif %}
+			         </div> 
+
+		             <div class="control-group">
+		             	{% if not email_is_taken %}
+		                  <div class="controls">
+		                  	<label class="label-controller">E-mail</label>
+							{{user_form.email}}
+						  </div>
+						{% else %}
+						<div class="controls">
+		                  	<label class="label-controller">E-mail</label>
+							{{user_form.email}}
+						  	<p class="help-block" style="color:red">E-mail déjà utilisé</p>
+						</div>
+						{% endif %}
+			    	</div> 
+
+			    	<div class="control-group">
+			    		{% if not phone_is_taken %}
+			    		<div class="controls">
+		                    <label class="label-controller">Numéro de téléphoner</label>
+							{{user_account_form.phone_number}}         
+						  	<p class="help-block"></p>
+						</div>
+						{% else %}
+		                  <div class="controls">
+		                    <label class="label-controller">Numéro de téléphone</label>
+							{{user_account_form.phone_number}}
+						  	<p class="help-block" style="color:red">Le numéro de téléphone existe déjà</p>
+						 </div>
+						{% endif %}
+
+			    	</div>
+
+			    	{% if password_mismatch %} 
+
+				    	<div class="control-group">
+			                  <div class="controls">
+			                    <label class="label-controller">mot de passe</label>
+								<input type="password" class="form-control" 
+						   	            id="password" name="password" required
+						   		   data-validation-required-message="Please enter your password" />
+						   		<p class="help-block"></p>
+							</div>
+				    	</div> 
+
+				    	<div class="control-group">
+			                  <div class="controls">
+			                    <label class="label-controller">Confirmez le mot de passe</label>
+								<input type="password" class="form-control"
+						   	            id="confirm_password" name="confirm_password" required
+						   		   data-validation-required-message="Please confirm your password" />
+						   		<p class="help-block" style="color:red">Les mots de passe ne correspondent pas</p>
+
+							</div>
+				    	</div>
+
+			    	{% elif password_too_short %}
+
+				    	<div class="control-group">
+			                  <div class="controls">
+			                    <label class="label-controller">mot de passe</label>
+								<input type="password" class="form-control" 
+						   	            id="password" name="password" required
+						   		   data-validation-required-message="Please enter your password" />
+						   		<p class="help-block"></p>
+							</div>
+				    	</div> 
+
+				    	<div class="control-group">
+			                  <div class="controls">
+			                    <label class="label-controller">Confirmez le mot de passe</label>
+								<input type="password" class="form-control"
+						   	            id="confirm_password" name="confirm_password" required
+						   		   data-validation-required-message="Please confirm your password" />
+						   		<p class="help-block" style="color:red">Les mots de passe trop courts (les mots de passe doivent être alphanumériques et avoir plus de six caractères)</p>
+
+							</div>
+				    	</div>
+
+			    	{% else %}
+
+				    	<div class="control-group">
+			                  <div class="controls">
+			                    <label class="label-controller">mot de passe</label>
+								<input type="password" class="form-control" 
+						   	            id="password" name="password" required
+						   		   data-validation-required-message="Please enter your password" />
+						   		<p class="help-block"></p>
+							</div>
+				    	</div> 
+
+				    	<div class="control-group">
+			                  <div class="controls">
+			                    <label class="label-controller">Confirmez le mot de passe</label>
+								<input type="password" class="form-control"
+						   	            id="confirm_password" name="confirm_password" required
+						   		   data-validation-required-message="Please confirm your password" />
+						   		<p class="help-block"></p>
+
+							</div>
+				    	</div>
+
+			    	{% endif %}
+
+			    	<div class="control-group">
+			    		{% if not referral_and_email_same %}
+			    			{% if not referral_email_not_exists %}
+					    		<div class="controls">
+				                    <label class="label-controller">Lien de référence </label>
+									{{user_account_form.referral}}
+								  	 <p class="help-block"></p>
+								</div>
+							{% elif referral_email_not_exists %}
+								<div class="controls">
+			                    	<label class="label-controller">Lien de référence </label>
+									{{user_account_form.referral}}
+							  	  <p class="help-block" style="color:red">Le lien de recommandation n'existe pas</p>
+								</div>
+							{% elif referral_denied %}
+								<div class="controls">
+			                    	<label class="label-controller">Lien de référence </label>
+									{{user_account_form.referral}}
+							  	  <p class="help-block" style="color:red">Lien de renvoi refusé</p>
+								</div>
+							{% endif %}
+						{% else %}
+			                  <div class="controls">
+			                    <label class="label-controller">Lien de référence </label>
+								{{user_account_form.referral}}
+							  	  <p class="help-block" style="color:red">Le courrier de référence et le courrier électronique sont les mêmes</p>
+							  </div>
+						{% endif %}
+			    	</div>  
+
+			    	<div class="control-group">
+		                  <div class="controls">
+							<input type="checkbox" id="t&Cs" required name="t&C"/> 
+								Après avoir lu les règles et les conditions j’accepte d’être member de VDP GUINEA.
+					   		<p class="help-block"></p>
+
+						</div>
+			    	</div> 	
+					 
+
+			     	<div id="success"> </div> <!-- For success/fail messages -->
+			    	<button type="submit" class="btn btn-primary pull-right">Soumettre</button><br />
+		        	</form>
+		        	<!-- endform -->
+				</div>
+				<div class="col-md-6">
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endif %}
+
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}
+
+
+
+	
+
+

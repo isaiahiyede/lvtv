@@ -1,0 +1,369 @@
+	<div class="modal fade" id="phForm" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+
+		            <!-- Modal Header -->
+		            <div class="modal-header" style="background-color: azure;">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Fournir une aide
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;">
+		                
+		                <form method ="POST" action="{% url 'client:create_contrib' %}" id='proviedhelpform'>
+						 {% csrf_token %}
+
+		                  <div class="form-group">
+		                    <label for="amount">Amoun(GNF)</label>
+		                    {{phform.amount}}
+		                  </div>
+
+		                  <input type="hidden" name="providehelp" id="providehelp" value="providehelp">
+		           
+		                  <div class="checkbox">
+		                    <label>
+		                        {{phform.tAndC}} J'ai lu <b style="color:red;">l'AVERTISSEMENT</b>, et je comprends parfaitement tous les risques. Je prends la décision de participer à lvtv-guinea, d'esprit et de mémoire..
+		                    </label>
+		                  </div>
+		                  <button type="submit" id="" class="btn btn-default create_request">Soumettre</button>
+		                </form>         
+		        	</div>
+		            
+		            <!-- Modal Footer -->
+		            <div class="modal-footer" style="background-color: azure;">
+		               
+		            </div>
+
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="ghForm" tabindex="-1" role="dialog" 
+     		aria-labelledby="myModalLabel" aria-hidden="true">
+	      <div class="modal-dialog">
+	        <div class="modal-content">
+
+	            <!-- Modal Header -->
+	            <div class="modal-header" style="background-color: azure;">
+	                <button type="button" class="close" 
+	                   data-dismiss="modal">
+	                       <span aria-hidden="true">&times;</span>
+	                       <span class="sr-only">Close</span>
+	                </button>
+	                <h4 class="modal-title" id="myModalLabel">
+	                    Obtenir de l'aide
+	                </h4>
+	            </div>
+	            
+	            <!-- Modal Body -->
+	            <div class="modal-body" style="background-color: azure;">
+	                
+	                <form method ="POST" action="{% url 'client:create_contrib' %}" id='gethelpform'>
+						 {% csrf_token %}
+			                  <p>Amount: GNF&nbsp;<b id="cash_out"></b></p>
+		                	  <input type="hidden" name="amount_req" id="amount_req" value="">
+		                	  <input type="hidden" name="ph_req" id="ph_req" value="">	
+	
+			                  <div class="checkbox">
+			                    <label>
+			                        <input type="checkbox" required/>  J'ai lu <b style="color:red;">l'AVERTISSEMENT</b>, et je comprends parfaitement tous les risques. Je prends la décision de participer à lvtv-guinea, d'esprit et de mémoire.
+			                    </label>
+			                  </div>
+			                  <button type="submit" id="" class="btn btn-default create_request2">Soumettre</button>
+	                </form>         
+	        	</div>
+	            
+	            <!-- Modal Footer -->
+	            <div class="modal-footer" style="background-color: azure;">      
+	            </div>
+
+	        </div>
+	      </div>
+	</div>
+
+
+	<div class="modal fade" id="profileForm" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+
+		            <!-- Modal Header -->
+		            <div class="modal-header">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal" style="background-color: azure;">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Afficher / Profil complet
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;">
+		                
+		                <form method ="POST" action="{% url 'general:update_profile' %}" id='updateprofileform'>
+						 {% csrf_token %}
+
+						 <div class="form-group">
+		                    <label class="label-controller" for="address1">Titre </label>
+		                    {{profileform.title}}
+		                  </div> 
+
+		                  <div class="form-group">
+		                    <label class="label-controller" for="address1">Numéro de compte</label>
+		                    {{profileform.bank_acc_number}}
+		                  </div> 
+
+		                  <div class="form-group">
+		                    <label class="label-controller" for="address1">Nom de banque </label>
+		                    {{profileform.bank_name}}
+		                  </div>
+		          
+		                  <button type="submit" id="update_profile" class="btn btn-default">Soumettre</button>
+		                </form>         
+		        	</div>
+		            
+		            <!-- Modal Footer -->
+		            <div class="modal-footer" style="background-color: azure;">
+		               
+		            </div>
+
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="viewprofileForm" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+
+		            <!-- Modal Header -->
+		            <div class="modal-header" style="background-color: azure;">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Voir le profil
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;">
+		                <span>prénom: {{request.user.useraccount.full_name}}</span><br/>
+		                <span>Email: {{request.user.email}}</span><br/>
+		                <span>Téléphone: {{request.user.useraccount.phone_number}}</span><br/>
+		                <span>Banque: {{request.user.useraccount.bank_name}}</span><br/>
+		                <span>Nom de banque : {{request.user.useraccount.bank_acc_number}}</span><br/>
+		                <span><b>NB: Pour modifier tout détail dans votre compte, contactez le support et vous serez répondu dans 24 à 48 heures<b></span>
+		        	</div>
+		            
+		            <!-- Modal Footer -->
+		            <div class="modal-footer" style="background-color: azure;">
+		               
+		            </div>
+
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="matchingForm" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="matched_val">
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="all_gh_avail" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="avail_gh">
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="get_gh_values" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="avail_gh_values">
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="all_phs_avail" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="avail_phs">
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="comments" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="all_comments">
+		        </div>
+		    </div>
+	</div>
+	
+	
+	<div class="modal fade" id="support_comments" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="all_support_comments">
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="testimonialModal" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="testimonial_form">
+		        <!-- Modal Header -->
+		            <div class="modal-header" style="background-color: azure;">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Témoignage
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;">
+		                
+		                <form method ="POST" enctype="multipart/form-data" action="{% url 'client:testimonial' %}" id='testimonialform'>
+						 {% csrf_token %}
+
+						 <div class="form-group">
+		                    <input type="hidden" name="test_track_num" id="test_track_num" value="">
+		                  </div>
+
+		                  <h4 style='margin-bottom: 11px !important;'>Message</h4>
+		                  <div class="form-group">
+		                    <textarea name="test_message" required id="test_message" value="" rows="4" cols="50" style="border-radius:4px !important;"></textarea>
+		                  </div> 
+
+		                  <div class="form-group">
+		                  	<input type="file" name="test_image" required id="test_image">
+		                  </div>
+
+		                  <button type="submit" id="testimonial_update" class="btn btn-default create_request">Soumettre</button>
+		                </form>         
+		        	</div>
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="adminViewProfile" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+
+		            <!-- Modal Header -->
+		            <div class="modal-header" style="background-color: azure;">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Voir le profil
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;" id="user_profile">
+		        	</div>
+
+		            <!-- Modal Footer -->
+		            <div class="modal-footer" style="background-color: azure;">
+		               
+		            </div>
+
+		        </div>
+		    </div>
+	</div>
+
+	<div class="modal fade" id="adminEditProfile" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content">
+
+		            <!-- Modal Header -->
+		            <div class="modal-header" style="background-color: azure;">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Editer le profil
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;" id="edit_user_profile">
+		        	</div>
+
+		            <!-- Modal Footer -->
+		            <div class="modal-footer" style="background-color: azure;">
+		               
+		            </div>
+
+		        </div>
+		    </div>
+	</div>
+
+
+	<div class="modal fade" id="adminViewMsg" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content" id="admin_msg_view">
+
+		            <!-- Modal Header -->
+		            <div class="modal-header" style="background-color: azure;">
+		                <button type="button" class="close" 
+		                   data-dismiss="modal">
+		                       <span aria-hidden="true">&times;</span>
+		                       <span class="sr-only">Close</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">
+		                    Messages
+		                </h4>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body" style="background-color: azure;">
+		        	</div>
+
+		            <!-- Modal Footer -->
+		            <div class="modal-footer" style="background-color: azure;">
+		               
+		            </div>
+
+		        </div>
+		    </div>
+	</div>

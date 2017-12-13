@@ -1,0 +1,75 @@
+ <div class="modal-content" id="all_comments">
+ {% include 'general/special_styles.html' %}
+ 
+    <!-- Modal Header -->
+    <div class="modal-header"  style="background-color: azure;">
+        <button type="button" class="close" 
+           data-dismiss="modal">
+               <span aria-hidden="true">&times;</span>
+               <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            Order Number: {{matched_order.pk}}<br/>
+            You can communicate with the other Participant here
+        </h4>
+        <p> <b>NOTE:</b> The use of <span style="color:red;">foul languauge and abuse speech</span> is highly prohibited and will lead to blocking of account if <br/>investigated by admin and establisehd to be true</p>
+    </div>
+    
+
+    <!-- Modal Body -->
+    <div class="modal-body" id="get_all_messages" style="background-color: azure;">
+        <div class="all_comms" style="overflow: scroll; margin-bottom: 10px;  height: 250px;" >
+
+        {% if matched_order.messagecentercomment.get_comments %}
+            {% for message in matched_order.messagecentercomment.get_comments %}
+                <div class="the_message">
+                {% if message.support_admin %}
+                    <span class="shape_oval_orange" style="position: relative; top: 15px;"></span>
+                    <span style="position: relative; left: 20px;">Admin</span><br/>
+                {% else %}
+                    {% if message.message_obj.matches.giver == message.user %}
+                        <span class="shape_oval_red" style="position: relative; top: 15px;"></span>
+                        <span style="position: relative; left: 20px;">Sender</span><br/>
+                    {% else %}
+                        <span class="shape_oval_green" style="position: relative; top: 15px;"></span>
+                        <span style="position: relative; left: 20px;">Receiver</span><br/>
+                    {% endif %}
+                {% endif %}
+                    <span>{{message.message}}</span><br/>
+                    <span>{{message.user}}</span><br/>
+                    <span>{{message.date}}</span><br/>
+                    {% if message.image_obj %}
+                    <span><a href="{{message.image_obj.url}}">image</a></span>
+                    {% endif %}
+                </div><hr>
+
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        <div class="comms_all">
+            
+            <form name="post_form" class="post-forms" id="post_form" action="{% url 'matchingSys:get_comments' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span>
+                <label>Message</label>
+                  <div class="fieldWrapper" id="the_post">
+                        {{ form.message }}
+                    </div>
+                    <div class="fieldWrapper" id="the_post_img">
+                        {{ form.image_obj }}
+                    </div>
+                  <input type="hidden" name="match_message_id" id="match_message_id" value="{{matched_order.pk}}">
+                  <input type="submit" value="send" class="button3 pull-right">
+                </span>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal Footer -->
+    <div class="modal-footer"  style="background-color: azure;">
+       
+    </div>
+
+</div>

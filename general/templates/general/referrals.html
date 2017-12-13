@@ -1,0 +1,183 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+{% endblock section3 %}
+
+{% block section4 %}
+
+<section id="inner-headline">
+           <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="pageTitle">Page de parrainage</h2>
+                </div>
+            </div>
+           </div>
+</section>
+
+<section id="content">
+      <div class="container">
+
+          <style>
+            .button {
+                background-color: #002e5b;
+                color: white;
+                padding: 15px 32px;
+                cursor: pointer;
+                border-radius: 15px !important;
+            }
+
+            .button2 {
+                color: white;
+                padding: 15px 32px;
+                border-radius: 5px !important;
+            }
+
+            .order-scroll {
+                overflow-y: scroll;
+                max-height: 350px !important;
+            }
+
+            .helpers{
+                position: relative;
+                right: 100px;
+            }
+
+            .tooltiptext title {
+                background-color: blue;
+                /* Position the tooltip */
+            }
+
+          </style>
+
+             <div class="row">
+                
+                <div class="col-md-12">
+                    <div class="about-logo">
+                        <h3>salut {{request.user}},</h3>
+                        <marquee behavior="scroll" direction="left">
+                        <p><b style="color:red;">AVERTISSEMENT!<b style="color:blue;"> C'EST UNE COMMUNAUTÉ D'AIDE FINANCIÈRE MUTUELLE!</b> Participez uniquement à l'argent de rechange. Ne pas contribuer tout l'argent que vous avez.</p>
+                        </marquee>
+                    </div>  
+                </div>
+            </div>            
+      </div>
+</section>
+
+<section id="gallery-1" class="content-block section-wrapper gallery-1">
+	 	<div class="container">  
+            <div class="row">
+
+            <table border="0" class="table table-striped" id="users_table">
+                    <!-- <style>
+
+                        .dropdown {
+                            background:#fff;
+                            border-radius:4px;
+                            right: 120px;
+
+                        }
+
+                        .dropdown-menu>li>a {
+                            /* display: block; */
+                            color:#428bca;
+                            padding: 3px 20px;
+                            clear: both;
+                            font-weight: 400;
+                            line-height: 1.428571429;
+                            white-space: nowrap;
+                        }
+
+                        .dropdown ul.dropdown-menu {
+                            border-radius:4px;
+                            box-shadow:none;
+                            margin-top:8px;
+                            background: black;
+                            width: 160px;
+
+                        }
+
+                        .dropdown ul.dropdown-menu:before {
+                            content: "";
+                            border-bottom: 10px solid #fff;
+                            border-right: 10px solid transparent;
+                            border-left: 10px solid transparent;
+                            position: absolute;
+                            top: -10px;
+                            right: 16px;
+                            z-index: 10;
+                        }
+
+                        .dropdown ul.dropdown-menu:after {
+                            content: "";
+                            border-bottom: 12px solid #ccc;
+                            border-right: 12px solid transparent;
+                            border-left: 12px solid transparent;
+                            position: absolute;
+                            top: -12px;
+                            right: 14px;
+                            z-index: 9;
+                        }
+
+                        li{
+                            list-style: none;
+                        }
+
+                    </style> -->
+
+                    <tr>
+                        <th>S/N</th>
+                        <th>email</th>
+                        <th>Date d'inscription</th>   
+                    </tr> 
+          
+                    {% for ref in referrals %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ref.email}}</td>
+                            <td>{{ref.created_on}}</td>
+                        </tr> 
+                    {% endfor %}
+                
+            </table>
+
+            <div class="pagination" style="position:relative; font-size:20px; margin:0px; left:500px;">
+                <span class="step-links">
+                    {% if referrals.has_previous %}
+                        <a style="font-size:20px;" href="?page={{ referrals.previous_page_number }}">&laquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+                    {% endif %}
+
+                    <span style="font-size:20px;" class="current">
+                        Page {{ referrals.number }} of {{ referrals.paginator.num_pages }}.
+                    </span>
+
+                    {% if referrals.has_next %}
+                        <a style="font-size:20px;" href="?page={{ referrals.next_page_number }}">&raquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- /.isotope-gallery-container -->
+        </div>
+        <!-- /.row --> 
+	</div>
+</section>
+
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}

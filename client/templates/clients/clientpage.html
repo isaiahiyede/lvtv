@@ -1,0 +1,377 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+
+    <section id="inner-headline">
+           <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="pageTitle">Page client</h2>
+                </div>
+            </div>
+           </div>
+    </section>
+
+    <section id="content">
+      <div class="container">
+
+          <style>
+
+            .button {
+                background-color: #002e5b;
+                color: white;
+                padding: 15px 32px;
+                cursor: pointer;
+                border-radius: 15px !important;
+            }
+
+            .buttonSpecial {
+                background-color: #002e5b;
+                color: white;
+                padding: -6px 32px;
+                cursor: pointer;
+                border-radius: 15px !important;
+            }
+
+
+            .order-scroll {
+                overflow-y: scroll;
+                max-height: 350px !important;
+            }
+
+            .helpers{
+                position: relative;
+                right: 100px;
+            }
+
+            .tooltiptext title {
+                background-color: blue;
+                /* Position the tooltip */
+            }
+
+            .sidebar{
+                border: 1px solid grey;
+                padding: 5px 5px 5px 15px;
+                border-radius: 5px !important;
+                margin-top: 10px;
+
+            }
+
+            .details{
+                border: 1px solid grey;
+                padding: 5px 5px 2px 5px;
+                border-radius: 15px !important;
+                margin-top: 10px;
+            }
+
+            .matches{
+                border: 1px solid black; 
+                margin: 10px 0 20px 0;
+                border-radius: 8px;
+                padding: 5px 5px 5px 15px;
+
+            }
+
+            .button3{
+                position: relative;
+                bottom: 7px;
+                right: -3px;
+                border-radius: 8px !important;
+            }
+
+            .smiley_color{
+                color: green;
+
+            }
+
+            .smiley_color_2{
+                color: orange;
+
+            }
+
+            .active{
+                color:black;
+                font-weight: bold;
+            }
+
+          </style>
+
+            <h3 style="margin:15px 0px 5px 0px; text-align: center;">
+
+                {% for msg in messages %}
+                    <script>
+                        function show_alert(){
+                        var alert = '<p class="text-{{ msg.tags }}">{{ msg }}</p>';
+                        document.write(alert);
+                        }
+                        display = window.setTimeout(show_alert(), 1000);
+                        window.clearTimeout(display);
+                    </script>
+                {% endfor %}
+            </h3>
+
+            <div class="row">
+                {% if not request.user.useraccount.block  %}
+                <div class="col-md-12 helpers">
+                    <h3 class="col-md-3"></h3>
+                    {% if request.user.useraccount.completed %}
+                        <h3 class="col-md-3"></h3>
+                        <h3 class="col-md-3"><button class="buttonSpecial" data-toggle="modal" data-target="#phForm">Fournir une aide</button></h3>
+                    {% else %}
+                        <h3 class="col-md-3"><button class="button disabled tooltiptext" data-toggle="tooltip" data-placement="bottom" title="Vous avez complété votre profil avant de pouvoir vous fournir de l'aide!!!" style="background-color: grey!important;" >Fournir une aide</button></h3>
+                    {% endif %}
+                    <h3 class="col-md-3"></h3>
+                </div>
+
+                 <div class="loading hidden" style="position: fixed;
+                                        left: 0px;
+                                        top: 280px;
+                                        width: 100%;
+                                        height: 100%;
+                                        z-index: 1;">
+                    <i class="fa fa-spinner fa-spin fa-5x fa-fw  pull-right"></i>
+                </div>  
+                {% endif %}
+
+                <div class="col-md-12">
+                    <div class="about-logo">
+                        <h3>salut {{request.user}},</h3>
+                        <marquee behavior="scroll" direction="left">
+                        <p><b style="color:red;">AVERTISSEMENT!</b><b style="color:blue;"> C'EST UNE COMMUNAUTÉ D'AIDE FINANCIÈRE MUTUELLE!Participez uniquement à l'argent de rechange. Ne pas contribuer tout l'argent que vous avez.</b></p>
+                        </marquee>
+                        <ul>
+                            <li>Si le paiement n'est pas effectué au plus tard le temps alloué, votre compte sera bloqué et tous les bonus seront annulés. Cette mesure est prise pour s'assurer que seulement les personnes sérieuses participent à ce programme .... Admin</li>
+                            <li>
+                            Le défaut de confirmer le paiement après avoir payé entraînera la blocage de votre compte et vous perdrez tous vos bonus ... Admin</li>
+                            <li>
+                            Ne confirmez pas le paiement, sauf si vous l'avez vérifié auprès de votre banque ... Admin</li>
+                        </ul>
+                    </div>  
+                </div> 
+
+        </div>
+    </section> 
+    
+    
+
+    <section id="content">
+        <div class="container content"> 
+
+            {% if not request.user.useraccount.block  %}
+                <div class="row-fluid col-md-12" style="position: relative; bottom: 60px;">
+
+                <div class="sidebar col-md-3">
+                    <p>Filtrer par:</p>
+                    <p><a href="{% url 'client:account_page' %}">Compte en attente</a></p>
+                    <p><a href="{% url 'general:referrals' %}">Renvois</a></p>
+                    <p><a {% if 'all' in request.path %} class="active"{% endif %} href="{% url 'client:orders_count' 'all' %}">Tous les transaction</a><span class="pull-right badge">
+                    {% getCount request 'all' %}</span></p>
+                    <p><a {% if 'pending' in request.path %} class="active"{% endif %} href="{% url 'client:orders_count' 'pending' %}">Les transaction en attente</a><span class="pull-right badge">
+                    {% getCount request 'pending' %}</span></p>
+                    <p><a {% if 'completed' in request.path %} class="active"{% endif %} href="{% url 'client:orders_count' 'completed' %}">transaction complétées</a><span class="pull-right badge">{% getCount request 'completed' %}</span></p>
+                    <p><a {% if 'deleted' in request.path %} class="active"{% endif %} href="{% url 'client:orders_count' 'deleted' %}">transaction supprimées</a><span class="pull-right badge">
+                    {% getCount request 'deleted' %}</span></p>
+                </div>
+
+
+                <div class="col-md-6">
+
+                    {% if req_obj %}
+                        {% for matched_order in req_obj %}
+
+                                <div class="matches">
+
+                                    {% if matched_order.messagecentercomment.get_commnets_count %}
+                                        <i style="cursor:pointer;" class="fa fa-envelope fa-1x pull-right comments" aria-hidden="true" match_order_pk="{{matched_order.pk}}">
+                                        {% check_last_comment_users_admin request matched_order.id %}</i>
+                                    {% else %}
+                                        <i style="cursor:pointer;" class="fa fa-envelope fa-1x pull-right comments" aria-hidden="true" match_order_pk="{{matched_order.pk}}"></i>
+                                    {% endif %}
+
+                                    {% if matched_order.giver == request.user %}
+                                        {% if matched_order.confirmed %}
+                                            <h5 style="margin-bottom: 5px;">Terminé</h5>
+                                        {% else %}
+                                            <h5 style="margin-bottom: 5px;">Vous avez été apparié pour apporter une contribution à:</h5>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if matched_order.confirmed %}
+                                            <h5 style="margin-bottom: 5px;">Terminé</h5>
+                                        {% else %}
+                                            <h5 style="margin-bottom: 5px;">Vous avez été apparié pour recevoir une contribution de:</h5>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if matched_order.giver == request.user %}
+                                        <span>{% if matched_order.confirmed %} <i class="fa fa-smile-o pull-right smiley_color fa-2x" aria-hidden="true"></i> {% else %} <i class="fa fa-frown-o pull-right smiley_color_2 fa-2x" aria-hidden="true"></i>
+                                        {% endif %}
+                                        </span>
+                                        <span><b>prénom:</b> {{matched_order.gethelp.get_full_name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><b>nom de banque:</b> {{matched_order.gethelp.user_account.useraccount.bank_name}}</span><br/>
+                                        <span><b>numéro de compte:</b> {{matched_order.gethelp.user_account.useraccount.bank_acc_number}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><b>Téléphone:</b> {{matched_order.gethelp.user_account.useraccount.phone_number}}</span>&nbsp;&nbsp;&nbsp;<br/>
+                                        <span><b>Amoun:</b> GNF {{matched_order.amt_matched}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><b>Numéro de transaction:</b> {{matched_order.gethelp.tracking_number}}
+                                        </span><br/>
+                                    {% else %}
+                                        <span>{% if matched_order.confirmed %} <i class="fa fa-smile-o pull-right smiley_color fa-2x" aria-hidden="true"></i> {% else %} <i class="fa fa-frown-o smiley_color_2 pull-right fa-2x" aria-hidden="true"></i>
+                                        {% endif %}
+                                        </span>
+                                        <span><b>prénom:</b> {{matched_order.providehelp.get_full_name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><b>Téléphone:</b> {{matched_order.providehelp.user_account.useraccount.phone_number}}</span>&nbsp;&nbsp;&nbsp;<br/>
+                                        <span><b>Amoun:</b> GNF {{matched_order.amt_matched }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><b>Numéro de transaction:</b> {{matched_order.providehelp.tracking_number}}</span>
+                                        <br/>
+                                    {% endif %}
+
+
+                                    <span>
+
+                                    {% if not matched_order.confirmed %}
+                                        <b>Temps restant:</b> {% get_time_left matched_order.time_left_after_5_days current_time %}
+                                    {% endif %}
+                                    </span><br/>
+
+
+
+                                    {% if matched_order.payment_made %}
+                                        {% if matched_order.confirmed %}
+
+                                          <div class="progress" style="height:15px; margin-bottom: 5px; width:25%">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">100%
+                                            </div>
+                                          </div>
+
+                                        {% else %}
+
+                                          <div class="progress" style="height:15px; margin-bottom: 5px; width:25%">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="50" style="width:50%">
+                                            </div>50%
+                                          </div>
+
+                                        {% endif %}
+                                    {% endif  %}
+     
+
+                                    {% if not matched_order.confirmed %}
+                                        {% if not matched_order.payment_made and matched_order.giver == request.user %}
+                                            <form name="payment_made" id="payment_made" enctype="multipart/form-data"
+                                                action="{% url 'matchingSys:paid_received' %}" method="POST">
+                                                {% csrf_token %}
+                                                <span>
+                                                  <input type="file" name="pay_file" required id="pay_file">
+                                                  <input type="checkbox" required name="payment_made" id="payment_made"> J'ai effectué un paiement
+                                                  <input type="hidden" name="match_id" id="match_id" value="{{matched_order.pk}}">
+                                                  <input type="hidden" name="paid_received" id="paid" value="paid">
+                                                  <button class="button2 pull-right button3" onclick="return confirm('Êtes-vous sûr de faire ce paiement?')">soumettre</button>
+                                                </span>
+                                            </form>
+                                        {% else %}
+                                            <form name="payment_received" id="payment_received" enctype="multipart/form-data"
+                                                action="{% url 'matchingSys:paid_received' %}" method="POST">
+                                                {% csrf_token %}
+                                                <span>
+                                                  <input type="checkbox" required name="payment_received" id="payment_received"> J'ai reçu un paiement
+                                                  <input type="hidden" name="match_id" id="match_id" value="{{matched_order.pk}}">
+                                                  <input type="hidden" id="received" name="paid_received" value="received">
+                                                  <button class="button2 pull-right button3" onclick="return confirm('Êtes-vous sûr de recevoir ce paiement??')">soumettre</button>
+                                                </span>
+                                            </form>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if matched_order.confirmation_image %}
+                                        <a href="{{matched_order.confirmation_image.url}}">Reçu</a>
+                                    {% endif %}
+                                </div>
+                        {% endfor %}
+                     {% else %}
+                        <h5>Vous n'avez aucun ordre dans cette catégorie</h5>
+                     {% endif %}
+
+                            <div class="pagination" style="position:relative; font-size:20px; margin:0px; ">
+                                <span class="step-links">
+                                    {% if req_obj.has_previous %}
+                                        <a style="font-size:20px;" href="?page={{ req_obj.previous_page_number }}">&laquo;</a>
+                                    {% else %}
+                                        <a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+                                    {% endif %}
+
+                                    <span style="font-size:20px;" class="current">
+                                        Page {{ req_obj.number }} of {{ req_obj.paginator.num_pages }}.
+                                    </span>
+
+                                    {% if req_obj.has_next %}
+                                        <a style="font-size:20px;" href="?page={{ req_obj.next_page_number }}">&raquo;</a>
+                                    {% else %}
+                                        <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                                    {% endif %}
+                                </span>
+                            </div>    
+                </div>
+
+
+
+
+                <div class="col-md-3" style="height:500px; overflow-y: scroll;">
+                    <!-- <marquee behavior="scroll" direction="up"> -->
+                    {% for contribution in contributions %}
+                    <div class="details" style="background-color: whitesmoke;" >
+                        <span>Participant: {{request.user.first_name}} {{request.user.last_name}}</span><br/>
+                        <span>Numéro de transaction: {{contribution.tracking_number}}</span><br/>
+                        <span>Amoun: GNF {{contribution.amount}}</span><br/>
+                        <span>Amoun Paired: GNF {{contribution.amt_paired}}</span><br/>
+                        <span>Amoun left: GNF {{contribution.amt_left}}</span><br/>
+                        <span>Date: {{contribution.created_on}}</span><br/>
+                        <span {% if contribution.status == 'New' %} style="color: limegreen;" {% elif contribution.status == 'Paired' %} style="color: darkmagenta;" {% else %} style="color:blue;" {% endif %}>Statut: {{contribution.status}}</span>
+                        {% if contribution.completed %}
+                            {% if not contribution.testimony %}
+                                <span class="pull-right"><button class="button3 testimonial" 
+                                style="background-color: chartreuse" id="testimonial" tracking_number="{{contribution.tracking_number}}" >Témoignage</button></span>
+                            {% else %}
+                                <span class="pull-right" style="color: chartreuse;">Terminé</span>
+                            {% endif %}
+                        {% endif %}
+                        <!-- <span><button style="position: relative; bottom: 10px; left:130px;" id="matchingReq" tracking_number="contribution.tracking_number" class="details matchingReq">View</button></span><br/> -->
+                    </div>
+                    {% endfor %}
+                    <!-- </marquee> -->
+                </div>     
+                </div>
+            {% else %}
+                <p style="color:red;">Remarquer!!! {{useraccount_obj.defaulter_msg}}</p><br/>
+                <h3 style="margin-top: -20px;">Votre compte a été suspendu ... Contacter immédiatement le support pour la rectification</h3><br/>
+            {% endif %}
+      
+        </div>
+    </section>
+
+{% endblock section3 %}
+    
+{% block section4 %}
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}
+
+{% block modal %}
+{% endblock modal %}
+
+
+
+
+
+
+
+
+

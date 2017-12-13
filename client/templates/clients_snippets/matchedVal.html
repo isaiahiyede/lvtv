@@ -1,0 +1,120 @@
+ <div class="modal-content" id="matched_val">
+
+ <style>
+     .matches{
+        border: 1px solid black; 
+        margin: 10px 0 20px 0;
+        border-radius: 8px;
+        width:50%;
+     }
+
+     span{
+        color:black;
+     }
+
+     .button3{
+        position: relative;
+        bottom: 15px;
+        right: 10px;
+        border-radius: 8px !important;
+     }
+
+ </style>
+
+
+    <!-- Modal Header -->
+    <div class="modal-header" style="background-color: azure;">
+        <button type="button" class="close" 
+           data-dismiss="modal">
+               <span aria-hidden="true">&times;</span>
+               <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            {% if req_obj.provideHelp %}
+            	Request to make a contribution {{req_obj.tracking_number}}
+            {% else %}
+            	Request to receive contribution {{req_obj.tracking_number}}
+            {% endif %}
+        </h4>
+    </div>
+    
+
+    <!-- Modal Body -->
+    <div class="modal-body" style="background-color: azure;">
+
+        <span>prénom: {{request.user.useraccount.full_name}}</span><br/>
+        <span>email: {{request.user.email}}</span><br/>
+        <span>Amoun: GNF {{req_obj.amount}}</span><br/>
+        <span>Amoun Jumelés: GNF {{req_obj.amt_paired}}</span><br/>
+        <span>Amoun restant: GNF {{req_obj.amt_left}}</span><br/>
+        <span>Daté: {{req_obj.created_on}}</span><br/>
+        <span>Statut: {{req_obj.status}}</span><br/>
+
+        {% if req_obj.get_matched_orders %}
+            {% if req_obj.provideHelp %}
+                {% for matched_order in req_obj.get_matched_orders %}
+                <div class="matches" {% if not matched_order.confirmed %} style="background-color: orange;" {% else %} style="background-color: green;" {% endif %}>
+                    <h5 style="margin-bottom: 5px;">Vous avez été jumelé pour faire un<br/> contribution à:</h5>
+                    <span>prénom: {{matched_order.gethelp.get_full_name}}</span><br/>
+                    <span>NOM DE BANQUE: {{matched_order.gethelp.user_account.useraccount.bank_name}}</span>&nbsp;&nbs;
+                    <span>NOMBRE DE BANQUE: {{matched_order.gethelp.user_account.useraccount.bank_acc_number}}</span><br/>
+                    <span>TÉLÉPHONE: {{matched_order.gethelp.user_account.useraccount.phone_number}}</span>&nbsp;&nbsp;&nbsp;<br/>
+                    <span>AMOUN: GNF {{matched_order.gethelp.amount}}</span>&nbsp;&nbsp;
+
+                    {% if not matched_order.payment_made %}
+                    <form name="payment_made" id="payment_made" enctype="multipart/form-data"
+                        action="{% url 'matchingSys:paid_received' %}" method="POST">
+                        {% csrf_token %}
+                        <span>
+                          <input type="file" name="pay_file" required id="pay_file">
+                          <input type="checkbox" required name="payment_made" id="payment_made">J'ai effectué un paiement
+                          <input type="hidden" name="match_id" id="match_id" value="{{matched_order.pk}}">
+                          <input type="hidden" name="paid_received" id="paid" value="paid">
+                          <button class="button2 pull-right button3">Soumettre</button>
+                        </span>
+                    </form>
+                    {% endif %}
+                    {% if matched_order.confirmation_image %}
+                        <a href="{{matched_order.confirmation_image.url}}">Reçu</a>
+                    {% endif %}
+
+
+                </div>
+                {% endfor %}
+            {% else %}
+                {% for matched_order in req_obj.get_matched_orders %}
+                    <div class="matches" {% if not matched_order.confirmed %} style="background-color: orange;" {% else %} style="background-color: green;" {% endif %}>
+                    <h5 style="margin-bottom: 5px;">You have been paired to receive <br/> contribution from:</h5>
+                    <span>prénom: {{matched_order.providehelp.get_full_name}}</span><br/>
+                    <span>TÉLÉPHONE: {{matched_order.providehelp.user_account.useraccount.phone_number}}</span>&nbsp;&nbsp;&nbsp;<br/>
+                    <span>AMOUN: GNF {{matched_order.gethelp.amount}}</span><br/>
+
+                    {% if not matched_order.payment_received %}
+                    <form name="payment_received" id="payment_received" enctype="multipart/form-data"
+                        action="{% url 'matchingSys:paid_received' %}" method="POST">
+                        {% csrf_token %}
+                        <span>
+                          <input type="checkbox" required name="payment_received" id="payment_received">J'ai reçu un paiement
+                          <input type="hidden" name="match_id" id="match_id" value="{{matched_order.pk}}">
+                          <input type="hidden" id="received" name="paid_received" value="received">
+                          <button class="button2 pull-right button3">Soumettre</button>
+                        </span>
+                    </form>
+                    {% endif %}
+                    {% if matched_order.confirmation_image %}
+                        <a href="{{matched_order.confirmation_image.url}}">Reçu</a>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer" style="background-color: azure;">
+       
+    </div>
+
+</div>

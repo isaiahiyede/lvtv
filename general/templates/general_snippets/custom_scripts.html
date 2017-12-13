@@ -1,0 +1,380 @@
+<script>
+
+		$(document).ready(function(){
+		    $('[data-toggle="tooltip"]').tooltip();   
+		});
+
+
+		$('body').on('click','.create_request',function(e){
+			$('.loading').removeClass('hidden');
+		})
+
+		$('body').on('click','.create_request2',function(e){
+			$('.loading').removeClass('hidden');
+		})
+
+
+		$('body').on('click','.get_help', function(e){
+			$('#cash_out').html($(this).attr('amt'));
+			$('#amount_req').val($(this).attr('amt'));
+			$('#ph_req').val($(this).attr('ph_order'));
+		});
+
+
+
+		$('body').on('click', '.matchingReq', function(e){
+			
+			var tracking_number = $(this).attr('tracking_number');
+
+			$.ajax({
+
+				type: "GET",
+				data: {'tracking_number':tracking_number},
+				url: "{% url 'client:get_details' %}",
+
+				success:function(data){
+					$('#matched_val').replaceWith(data);
+					$('#matchingForm').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+			});
+		});
+
+
+
+		$('body').on('click','.get_gh',function(e){
+			var tracking_number = $(this).attr('tracking_number');
+			$('#needed_value').val(tracking_number);
+			// alert(tracking_number);
+
+			$.ajax({
+				type: "GET",
+				data: {'tracking_number':tracking_number},
+				url: "{% url 'lvtvAdmin:get_gh_pair' %}",
+
+				success:function(data){
+					$('#avail_phs').replaceWith(data);
+					$('#all_phs_avail').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+			});
+		});
+
+
+		$('body').on('click', 'input[type="radio"][name="phtype"]', function(){
+			var tracking_number = $(this).attr('ph_id');
+			var needed_value = $('#needed_value').val();
+			$('.loading').removeClass('hidden');
+			// alert(tracking_number);
+
+			$.ajax({
+
+				type: "POST",
+				data: {"adminSelectedGH":needed_value, "adminSelectedPH":tracking_number},
+				url: "{% url 'matchingSys:create_match' %}",
+
+				success:function(data){
+					console.log('not working');
+					location.reload();
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+			});
+		});
+
+
+		$('body').on('click', '.type_gh', function(e){
+			
+			var gh_type = $(this).attr('gh_type');
+
+			$.ajax({
+
+				type: "GET",
+				data: {'gh_type':gh_type},
+				url: "{% url 'lvtvAdmin:get_details_gh' %}",
+
+				success:function(data){
+					$('#avail_gh_values').replaceWith(data);
+					$('#get_gh_values').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+			});
+		});
+
+
+		$('body').on('click', '.testimonial', function(e){
+			
+			var tracking_number = $(this).attr('tracking_number');
+			// alert(tracking_number);
+			$('#test_track_num').val(tracking_number)
+			$('#testimonialModal').modal('show');
+		});
+		
+		
+
+		$('body').on('click', '.support_message', function(e){
+			
+			var pk = $(this).attr('message_pk');
+			// alert(pk);
+
+			$.ajax({
+				data: {'pk':pk},
+				url: "{% url 'matchingSys:supoort_messages' %}",
+				type: "GET",
+
+				success:function(data){
+					console.log('working')
+					$('#all_support_comments').replaceWith(data);
+					$('#support_comments').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+
+			})
+		});
+		
+		
+		$('body').on('click', '.comments', function(e){
+			
+			var pk = $(this).attr('match_order_pk');
+			// alert(pk);
+
+			$.ajax({
+				data: {'pk':pk},
+				url: "{% url 'matchingSys:get_comments' %}",
+				type: "GET",
+
+				success:function(data){
+					console.log('working')
+					$('#all_comments').replaceWith(data);
+					$('#comments').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+
+			})
+		});
+
+
+		$('body').on('click', '#send', function(e){
+		     
+		    var text = $('#match_message').val();
+		    var image = $('input[type=file][name=message_image]').val().replace(/C:\\fakepath\\/i, '')
+		    var match_pk = $('#match_message_id').val();
+
+		    if (text == ""){
+		    	return false;
+		    	alert("please enter message");
+		    }
+
+		    else{
+
+			    $.ajax({
+		           type: "POST",
+		           url: "{% url 'matchingSys:get_comments' %}",
+		           data: {'text':text, 'image':image, 'match_pk':match_pk},
+		           success: function(data){
+		           	$('#all_comments').replaceWith(data);
+		           	console.log('working')
+
+		           },
+		           error:function(data){
+		           		console.log('not working')
+		           }
+		           
+		         });
+				}
+			});
+
+
+
+		$('body').on('click', '#admin_send', function(e){
+		     
+		    var text = $('#admin_match_message').val();
+		    var image = $('input[type=file][name=admin_message_image]').val().replace(/C:\\fakepath\\/i, '')
+		    var match_pk = $('#admin_msg_id').val();
+		    var admin_support = $('#admin_support').val();
+
+		    if (text == ""){
+		    	return false;
+		    	alert("please enter message");
+		    }
+
+		    else{
+
+			    $.ajax({
+		           type: "POST",
+		           url: "{% url 'lvtvAdmin:get_admin_msgs' %}",
+		           data: {'text':text, 'image':image, 'match_pk':match_pk, 'admin_support':admin_support},
+		           success: function(data){
+		           	$('#admin_msg_view').replaceWith(data);
+		           	console.log('working')
+
+		           },
+		           error:function(data){
+		           		console.log('not working')
+		           }
+		           
+		         });
+				}
+			});
+
+
+		$('body').on('click', '.msg_view', function(e){
+		     
+		    var msg_id = $(this).attr('msg_pk');
+
+		    $.ajax({
+				data: {'pk':msg_id},
+				url: "{% url 'lvtvAdmin:get_admin_msgs' %}",
+				type: "GET",
+
+				success:function(data){
+					console.log('working')
+					$('#admin_msg_view').replaceWith(data);
+					$('#adminViewMsg').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+
+			})
+		});
+
+
+		$('body').on('click', '#send_support', function(e){
+		     
+		    var support_text = $('#support_match_message').val();
+		    var support_image = $('input[type=file][name=support_message_image]').val().replace(/C:\\fakepath\\/i, '')
+		    var support_match_pk = $('#support_match_message_id').val();
+
+		    if (support_text == ""){
+		    	return false;
+		    }
+
+		    else{
+
+			    $.ajax({
+		           type: "POST",
+		           url: "{% url 'matchingSys:supoort_messages' %}",
+		           data: {'text':support_text, 'image':support_image, 'match_pk':support_match_pk, 
+		           'support':'support'},
+		           success: function(data){
+		           	$('#all_support_comments').replaceWith(data);
+		           	console.log('working')
+
+		           },
+		           error:function(data){
+		           		console.log('not working')
+		           }
+		           
+		         });
+				}
+			});
+
+
+		$('body').on('click', '.user_action', function(e){
+
+			var user_id = $(this).attr('user_pk');
+			var action = $(this).attr('action');
+			// alert(user_id);
+
+			$.ajax({
+				data: {'pk':user_id, 'action':action},
+				url: "{% url 'lvtvAdmin:user_action' %}",
+				type: "GET",
+
+				success:function(data){
+					console.log('working')
+					$('#user_profile').replaceWith(data);
+					$('#adminViewProfile').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+
+			})
+
+		})
+
+
+		$('body').on('click', '.user_edit', function(e){
+
+			var user_id = $(this).attr('user_pk');
+			var action = $(this).attr('action');
+			// alert(user_id);
+
+			$.ajax({
+				data: {'pk':user_id, 'action':action},
+				url: "{% url 'lvtvAdmin:user_edit' %}",
+				type: "GET",
+
+				success:function(data){
+					console.log('working')
+					$('#edit_user_profile').replaceWith(data);
+					$('#adminEditProfile').modal('show');
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+
+			})
+
+		})
+
+
+		$(document).ready(function() {
+
+			var frm = $('.post-forms');
+			var method = $(this).attr('method');
+			var action = $(this).attr('action');
+
+			frm.submit(function (e) {
+		    	e.preventDefault();
+		    	alert('form submitted');
+
+		        $.ajax({
+		            type: method,
+		            url: action,
+		            data: frm.serialize(),
+
+		            success: function (data) {
+		                console.log('working');
+		            },
+
+		            error: function(data) {
+		                console.log('not working');
+		            }
+		        });
+					return false;
+			   });
+			})
+
+</script>

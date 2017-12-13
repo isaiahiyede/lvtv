@@ -1,0 +1,102 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+{% endblock section3 %}
+
+{% block section4 %}
+<section id="inner-headline">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h2 class="pageTitle">Connectez-vous ici</h2>
+			</div>
+		</div>
+	</div>
+</section>
+<section id="content">
+	
+	<div class="container">
+		<div class="row"> 
+			<div class="col-md-12">
+				<div class="about-logo">
+					<p>Vous pouvez vous connecter en remplissant le formulaire;</p>
+                    <p>Veuillez saisir une combinaison correcte de votre adresse e-mail / numéro de téléphone et mot de passe</p>
+                    <p>Si vous avez oublié votre mot de passe, cliquez sur le lien 'Mot de passe oublié'</p>
+                    <p>NB: Champs avec <b style="color:red">'*'</b> sont requis</p>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-6">
+						   <!-- Form itself -->
+          <form action="{% url 'general:login' %}" method="POST">
+          {% csrf_token %}
+	       <h3>Formulaire de connexion</h3>
+
+	       {% if not email_not_found %}
+	       	<div class="control-group">
+	            <div class="controls">
+	            <label class="label-controller">e-mail/numéro de téléphone</label>
+				<input type="text" class="form-control" 
+				   	    id="email" name="email" required
+				           data-validation-required-message="Please enter your phone number or email" />
+			   </div>
+	         </div><br/>
+			{% else %}	       
+			 <div class="control-group">
+	            <div class="controls">
+	            <label class="label-controller">e-mail/numéro de téléphone</label>
+				<input type="text" class="form-control" 
+				   	    id="email" name="email" required value="{{email}}"
+				           data-validation-required-message="Please enter your phone number or email" />
+				  {% if email_not_found %}         
+				  	<p class="help-block" style="color:red;">Le numéro de téléphone / e-mail n'est pas trouvé</p>
+				  {% endif %}
+			   </div>
+	         </div> <br/>
+	         {% endif %}
+
+	    	  <div class="control-group">
+                  <div class="controls">
+                  	<label class="label-controller">Mot de passe</label>
+					<input type="password" class="form-control" 
+			   	            id="password" name="password" required
+			   		   data-validation-required-message="Please enter your password" />
+			   		    {% if no_record_found %}
+			   				<p class="help-block" style="color:red;">Aucun enregistrement trouvé correspondant au nombre de messagerie / numéro de téléphone et mot de passe</p>
+			   			{% endif %}
+				</div>
+	    	</div><br/> 	 
+
+	     	<div id="success"> </div> <!-- For success/fail messages -->
+	    	<button type="submit" class="btn btn-primary pull-right">Soumettre</button><br />
+          </form>
+          <a href="/resetpassword/">mot de passe oublié</a>
+
+			</div>
+			<div class="col-md-6">
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}
+
+
+
+	
+
+

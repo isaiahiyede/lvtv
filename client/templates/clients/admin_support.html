@@ -1,0 +1,146 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+<div class="loading hidden" style="text-align: center;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
+{% endblock section3 %}
+
+{% block section4 %}
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="pageTitle">Contactez le support</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="content">
+	
+		<div class="container">
+
+			<h3 style="margin:15px 0px 5px 0px; text-align: center;">
+
+                {% for msg in messages %}
+                    <script>
+                        function show_alert(){
+                        var alert = '<p class="text-{{ msg.tags }}">{{ msg }}</p>';
+                        document.write(alert);
+                        }
+                        display = window.setTimeout(show_alert(), 1000);
+                        window.clearTimeout(display);
+                    </script>
+                {% endfor %}
+            </h3>
+
+
+			<div class="row"> 
+				<div class="col-md-12">
+					<div class="about-logo">
+						<h3>Avoir un problème?</h3>
+						 <p>Remplissez le formulaire ci-dessous et vous serez répondu entre 24 heures et 48 heures</p>
+					</div>  
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+										  	
+				   <!-- Form itself -->
+		          <!--<form name="contactSupportForm" id="contactSupportForm"
+						method="POST" action="{% url 'matchingSys:supoort_messages' %}" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="control-group">
+				            <div class="controls">
+				            <label class="label-controller">Subject</label>
+							<input type="text" class="form-control" 
+							   	    id="subject" name="subject" required />
+							  <p class="help-block"></p>
+						   </div>
+				        </div> 
+
+				        <input type="hidden" name="admin" id="admin" value="admin">	
+			            		  
+		                <div class="control-group">
+		                 <div class="controls">
+		                 <label class="label-controller">Message</label>
+							 <textarea rows="10" cols="100" class="form-control" 
+			                       placeholder="Message" name="message" id="message" required value="">
+			                 </textarea>
+						</div>
+		               </div><br/> 
+
+						
+						<div class="control-group">
+		                 <div class="controls">
+		                 <label >Upload File</label>
+							 <input type="file" id="file_obj" name="file_obj" />
+							  <p class="help-block"></p>
+						</div>
+		               </div><br/>
+					   
+					   	<button type="submit" class="btn btn-primary pull-right">Send</button><br/>
+		          </form>-->
+				  
+				  <form name="contactSupportForm" id="contactSupportForm" enctype="multipart/form-data"
+					action="{% url 'matchingSys:supoort_messages' %}" method="POST">
+					{% csrf_token %}
+					<span>
+					  <label class="label-controller">Assujettir</label><br/>
+					  <input type="text" name="subject" id="subject" required value=""><br/><br/>
+					  <label class="label-controller">Message</label><br/>
+					  <textarea rows="10" cols="100" class="form-control" 
+			             placeholder="Message" name="message" id="message" required value="">
+			          </textarea><br/>
+					  <input type="hidden" name="admin" id="admin" value="admin">	
+					  <input type="file" name="file_obj" required id="file_obj">
+						<button type="submit" class="btn btn-primary pull-right">Soumettre</button><br/>
+					</span>
+				  </form>
+				  
+				</div>
+
+				<div class="col-md-4 pull-right" style="height:500px; overflow-y: scroll;">
+					<style>
+						.details{
+						    border: 1px solid grey;
+						    padding: 5px 5px 2px 5px;
+						    border-radius: 10px !important;
+						    margin-top: 4px;
+						}
+					</style>
+					
+						{% if message_obj %}
+							{% for message in message_obj %}	
+							<div class="details" style="background-color: whitesmoke;" >
+								<i style="cursor:pointer;" class="fa fa-envelope fa-1x pull-right support_message" message_pk="{{message.pk}}">
+								{% check_last_comment request message.pk %}</i>
+								<span>{{message.user}}</span><br/>
+								<span>{{message.subject}}</span><br/>
+								<span>{{message.created_on}}</span><br/>
+								{% if message.image_obj %}
+                                    <a href="{{message.image_obj.url}}">Document</a>
+                                {% endif %}
+							</div>
+							{% endfor %}
+						{% endif %}
+					
+				</div>	
+			</div>
+
+	    </div>
+</section>
+
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}

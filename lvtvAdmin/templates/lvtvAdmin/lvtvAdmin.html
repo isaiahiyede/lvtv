@@ -1,0 +1,173 @@
+{% extends 'general/index.html' %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+
+
+{% block section2 %}
+{% endblock section2 %}
+
+{% block section3 %}
+{% endblock section3 %}
+
+{% block section4 %}
+
+<section id="inner-headline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="pageTitle">Administrator, {{request.user}}</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="content">
+      <div class="container">
+
+          <style>
+            .button {
+                background-color: #002e5b;
+                color: white;
+                padding: 15px 32px;
+                cursor: pointer;
+                border-radius: 15px !important;
+            }
+
+            .button2 {
+                color: white;
+                padding: 15px 32px;
+                border-radius: 5px !important;
+            }
+
+            .order-scroll {
+                overflow-y: scroll;
+                max-height: 350px !important;
+            }
+
+            .helpers{
+                position: relative;
+                right: 100px;
+            }
+
+            .tooltiptext title {
+                background-color: blue;
+                /* Position the tooltip */
+            }
+
+          </style>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    {% if greater_of_gh_ph == True %}
+                        <button class="button2 pull-right" style="background-color: green;">System OK</button>
+                    {% else %}
+                        <button class="button2 pull-right" style="background-color: red;">System Inbalance</button>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="about-logo">
+                        <span>
+                        <h4>Number of Users:&nbsp; {% get_all_users %}</h4>
+                        </span>
+                        <marquee behavior="scroll" direction="left">
+                        <p><b style="color:red;">WARNING!</b> <b style="color:blue;">Please check and double check before performing any operation;</b> Participants are counting on your utmost deligence for them to enjoy the ease of use of the application </p>
+                        </marquee>
+                    </div>  
+                </div>
+            </div>           
+      </div>
+
+        <section class="section-padding">
+            <div class="container">
+                <div class="row showcase-section">
+
+                    <div class="col-md-12">
+                        <a gh_type="allPhPaired" class="btn button2 type_gh">Paired PH'S</a>&nbsp;&nbsp;&nbsp;
+                        <a gh_type="allPhPairedUnpaired" class="btn button2 type_gh">Unpaired PH'S</a>&nbsp;&nbsp;&nbsp;
+                        <a gh_type="allGhPaired" class="btn button2 type_gh">Paired GH'S</a>&nbsp;&nbsp;&nbsp;
+                        <a gh_type="allGhPairedUnpaired" class="btn button2 type_gh">Unpaired GH'S</a>&nbsp;&nbsp;&nbsp;
+                        <a gh_type="ph_gh_indicator" class="btn button2 type_gh">System Indicator</a>&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div> 
+            </div>
+        </section>
+</section>
+
+<section id="gallery-1" class="content-block section-wrapper gallery-1">
+	 	<div class="container">
+        <!-- /.gallery-filter -->
+                <div class="loading hidden" style="position: fixed;
+                                    left: 0px;
+                                    top: 240px;
+                                    width: 100%;
+                                    height: 100%;
+                                    z-index: 1;">
+                    <i class="fa fa-spinner fa-spin fa-5x fa-fw pull-right"></i>
+                </div>
+        
+        <div class="row">
+
+            <table border="0" class="table table-striped" id="accounts_table">
+
+                    <tr>
+                        <th>Tracking Number</th>
+                        <th>Participant</th>  
+                        <th>Date Created</th> 
+                        <th>Amount</th>
+                        <th>Amount paired</th>
+                        <th>Amount Left</th>  
+                        <th>Status</th>
+                    </tr> 
+          
+                    {% for contrib in contributions %}
+                        <tr>
+                            <td>{{contrib.tracking_number}}</td>
+                            <td>{{contrib.user_account}}</td>
+                            <td>{{contrib.created_on}}</td>
+                            <td>{{contrib.amount}}</td> 
+                            <td>{{contrib.amt_paired}}</td>
+                            <td>{{contrib.amt_left}}</td>
+                            <td>{{contrib.status}}</td>
+                        </tr> 
+                    {% endfor %}
+                
+            </table>
+
+            <div class="pagination" style="position:relative; font-size:20px; margin:0px; left:500px;">
+                <span class="step-links">
+                    {% if contributions.has_previous %}
+                        <a style="font-size:20px;" href="?page={{ contributions.previous_page_number }}">&laquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+                    {% endif %}
+
+                    <span style="font-size:20px;" class="current">
+                        Page {{ contributions.number }} of {{ contributions.paginator.num_pages }}.
+                    </span>
+
+                    {% if contributions.has_next %}
+                        <a style="font-size:20px;" href="?page={{ contributions.next_page_number }}">&raquo;</a>
+                    {% else %}
+                        <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- /.isotope-gallery-container -->
+        </div>
+        <!-- /.row --> 
+	</div>
+</section>
+
+{% endblock section4 %}
+
+{% block section5 %}
+{% endblock section5 %}
+
+{% block section6 %}
+{% endblock section6 %}
